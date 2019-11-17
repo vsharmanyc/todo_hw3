@@ -59,8 +59,9 @@ class ListScreen extends Component {
                     <label className="active" htmlFor="password">Owner</label>
                     <input type="text" name="owner" id="owner" onChange={this.handleChange} defaultValue={todoList.owner} />
                 </div>
-                {/*<ItemsList todoList={todoList} />*/}
-                <div dangerouslySetInnerHTML={{__html: this.makeTableHTML(todoList)}} />
+                
+                <ItemsList todoList={todoList} />
+                {/*<div dangerouslySetInnerHTML={{__html: this.makeTableHTML(todoList)}} />*/}
             </div>
         );
     }
