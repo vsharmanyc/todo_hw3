@@ -48,3 +48,11 @@ input[type=email]:not(.browser-default):focus:not([readonly]) + label,
 input[type=password]:not(.browser-default):focus:not([readonly]) + label{
   color: #ec407a !important;
 }
+
+.material-icons{
+  direction: left;
+}
+
+.fixed-action-btn{
+  position: relative;
+}
