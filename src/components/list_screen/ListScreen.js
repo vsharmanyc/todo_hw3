@@ -39,21 +39,22 @@ class ListScreen extends Component {
 
     sortTask = (e) => {
         console.log("SORT TASK");
-        let items = this.props.todoList.items;
-        items.sort(function(a,b){return a["description"] > b["description"]});
-        if(!this.sortIncreasing)
-            items.reverse();
-        for(var i = 0; i < items.length; i++)
-            items[i]["key"] = i;
-        const fireStore = getFirestore();
-        fireStore.collection('todoLists').doc(this.props.todoList.id).update({ items: items });
-        this.sortIncreasing = !this.sortIncreasing;
+        this.sortItemsBy(function(a,b){return a["description"] > b["description"]});
     }
 
     sortDueDate = (e) => {
         console.log("SORT DUE DATE");
+        this.sortItemsBy(function(a,b){return a["due_date"] > b["due_date"]});
+    }
+
+    sortStatus = (e) => {
+        console.log("SORT STATUS");
+        this.sortItemsBy(function(a,b){return a["completed"] + "" > b["completed"] + ""});
+    }
+
+    sortItemsBy(sortFunction) {
         let items = this.props.todoList.items;
-        items.sort(function(a,b){return a["due_date"] > b["due_date"]});
+        items.sort(sortFunction);
         if(!this.sortIncreasing)
             items.reverse();
         for(var i = 0; i < items.length; i++)
@@ -63,18 +64,9 @@ class ListScreen extends Component {
         this.sortIncreasing = !this.sortIncreasing;
     }
 
-    sortStatus = (e) => {
-        console.log("SORT STATUS");
-        console.log("SORT DUE DATE");
-        let items = this.props.todoList.items;
-        items.sort(function(a,b){return (a["completed"]? "Completed" : "Pending") > (b["completed"]? "Completed" : "Pending")});
-        if(!this.sortIncreasing)
-            items.reverse();
-        for(var i = 0; i < items.length; i++)
-            items[i]["key"] = i;
-        const fireStore = getFirestore();
-        fireStore.collection('todoLists').doc(this.props.todoList.id).update({ items: items });
-        this.sortIncreasing = !this.sortIncreasing;
+    addItem = (e) => {
+        console.log("ADD ITEM");
+
     }
 
     makeTableHTML(todoList) {
@@ -128,7 +120,7 @@ class ListScreen extends Component {
                 {/* this code puts items into a table 
                 <div dangerouslySetInnerHTML={{__html: this.makeTableHTML(todoList)}} />
                 */}
-                <center><a class="btn-floating btn-large black"><i class="material-icons">add_circle</i></a></center>
+                <center><a class="btn-floating btn-large black"><i class="material-icons" onClick={this.addItem}>add_circle</i></a></center>
                 <br></br>
             </div>
         );
