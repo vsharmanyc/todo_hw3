@@ -6,6 +6,7 @@ import ItemsList from './ItemsList.js'
 import { firestoreConnect } from 'react-redux-firebase';
 import { taggedTemplateExpression, tsAnyKeyword } from '@babel/types';
 import { getFirestore } from 'redux-firestore';
+import { Link } from 'react-router-dom';
 
 class ListScreen extends Component {
     state = {
@@ -66,6 +67,7 @@ class ListScreen extends Component {
 
     addItem = (e) => {
         console.log("ADD ITEM");
+        this.props.history.push("/todoLists/" + this.props.todoList.id + "/ItemUpdate");
 
     }
 
@@ -90,6 +92,8 @@ class ListScreen extends Component {
             return <Redirect to="/" />;
         }
 
+        console.log("KJFHKJHFKJDHKJFHDKFHDKJFHDKJF");
+
         return (
             <div className="container white">
                 <a class="btn-floating btn-small black right"><i class="material-icons" onClick={this.trashClicked} >delete</i></a>
@@ -107,7 +111,7 @@ class ListScreen extends Component {
                         <div class="col s3">
                             <span className="task" onClick={this.sortTask}><font size="4">TASK</font></span>
                         </div>
-                        <div class="col s3">
+                        <div class="col s2">
                             <span className="dueDate" onClick={this.sortDueDate}><font size="4">DUE DATE</font></span>
                         </div>
                         <div class="col s3">
@@ -120,12 +124,15 @@ class ListScreen extends Component {
                 {/* this code puts items into a table 
                 <div dangerouslySetInnerHTML={{__html: this.makeTableHTML(todoList)}} />
                 */}
-                <center><a class="btn-floating btn-large black"><i class="material-icons" onClick={this.addItem}>add_circle</i></a></center>
+                <Link to = {"/todoList/" + this.props.todoList.id +"/UpdateItem"}>
+                    <center><a class="btn-floating btn-large black"><i class="material-icons">add_circle</i></a></center>
+                </Link>
                 <br></br>
             </div>
         );
     }
 }
+
 
 const mapStateToProps = (state, ownProps) => {
     const { id } = ownProps.match.params;
@@ -142,6 +149,6 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-        { collection: 'todoLists' },
+        { collection: 'todoLists' , orderBy: ['time', 'desc']},
     ]),
 )(ListScreen);

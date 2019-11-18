@@ -11,7 +11,10 @@ import HomeScreen from './components/home_screen/HomeScreen.js';
 import ListScreen from './components/list_screen/ListScreen.js';
 import DatabaseTester from './test/DatabaseTester'
 
+import UpdateItem from './components/list_screen/UpdateItem.js';
+
 class App extends Component {
+
   render() {
     const { auth } = this.props;
 
@@ -23,6 +26,8 @@ class App extends Component {
           <div className="App">
             <Navbar />
             <Switch>
+              <Route path="/todoList/:id/UpdateItem" component={UpdateItem} />
+              <Route path="/todoList/:id/UpdateItem/:key/key=" component={UpdateItem} />
               <Route exact path="/" component={HomeScreen} />
               <Route path="/databaseTester" component={DatabaseTester} />
               <Route path="/register" component={RegisterScreen} />

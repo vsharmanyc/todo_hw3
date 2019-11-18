@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button } from 'react-materialize';
 import { getFirestore } from 'redux-firestore';
+import { Link } from 'react-router-dom';
 
 class ItemCard extends React.Component {
     moveDown = (e) => {
@@ -58,29 +59,33 @@ class ItemCard extends React.Component {
             <div className="card z-depth-0 todo-list-link pink-lighten-3">
                 <div className="card-content grey-text text-darken-3">
                     <div class="row">
-                        <div class="col s3">
-                            <span className="card-title">{item.description}</span>
-                            <span className="card-title">{"Assigned To: " + item.assigned_to}</span>
+                        <Link to={"/todoList/" + this.props.todoList.id + "/UpdateItem/key=" + item.key}>
+                            <div class="col s3">
+                                <span className="card-title"><font size="3">{item.description}</font></span>
+                                <span className="card-title"><font size="3">{"Assigned To: " + item.assigned_to}</font></span>
+                            </div>
+                            <div class="col s2">
+                                <span className="card-title"><font size="3">{item.due_date}</font></span>
+                            </div>
+                            <div class="col s5">
+                                <span className="card-title"><font size="3">{item.completed ? "Completed" : "Pending"}</font></span>
+                            </div>
+                        </Link>
+                        <div class="col">
+                            <Button
+                                floating
+                                fab={{
+                                    direction: 'left',
+                                    hoverEnabled: true,
+                                }}
+                                className="red"
+                                large
+                            >
+                                <Button floating icon={<i class="material-icons">arrow_upward</i>} className="red" onClick={this.moveUp} />
+                                <Button floating icon={<i class="material-icons">arrow_downward</i>} className="yellow darken-1" onClick={this.moveDown} />
+                                <Button floating icon={<i class="material-icons">cancel</i>} className="green" onClick={this.deleteItem} />
+                            </Button>
                         </div>
-                        <div class="col s3">
-                            <span className="card-title">{item.due_date}</span>
-                        </div>
-                        <div class="col s3">
-                            <span className="card-title">{item.completed ? "Completed" : "Pending"}</span>
-                        </div>
-                        <Button
-                            floating
-                            fab={{
-                                direction: 'left',
-                                hoverEnabled: true,
-                            }}
-                            className="red"
-                            large
-                        >
-                            <Button floating icon={<i class="material-icons">arrow_upward</i>} className="red" onClick={this.moveUp} />
-                            <Button floating icon={<i class="material-icons">arrow_downward</i>} className="yellow darken-1" onClick={this.moveDown} />
-                            <Button floating icon={<i class="material-icons">cancel</i>} className="green" onClick={this.deleteItem} />
-                        </Button>
                     </div>
                 </div>
             </div>
