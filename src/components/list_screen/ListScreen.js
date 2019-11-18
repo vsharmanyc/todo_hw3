@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import ItemsList from './ItemsList.js'
 import { firestoreConnect } from 'react-redux-firebase';
-import { taggedTemplateExpression } from '@babel/types';
+import { taggedTemplateExpression, tsAnyKeyword } from '@babel/types';
 import { getFirestore } from 'redux-firestore';
 
 class ListScreen extends Component {
@@ -12,6 +12,8 @@ class ListScreen extends Component {
         name: '',
         owner: '',
     }
+
+    sortIncreasing = true;
 
     handleChange = (e) => {
         const { target } = e;
@@ -32,6 +34,47 @@ class ListScreen extends Component {
         console.log("TRASH CLICKED");
         const fireStore = getFirestore();
         var todoListRef = fireStore.collection('todoLists').doc(this.props.todoList.id).delete();
+        this.props.history.push("/");
+    }
+
+    sortTask = (e) => {
+        console.log("SORT TASK");
+        let items = this.props.todoList.items;
+        items.sort(function(a,b){return a["description"] > b["description"]});
+        if(!this.sortIncreasing)
+            items.reverse();
+        for(var i = 0; i < items.length; i++)
+            items[i]["key"] = i;
+        const fireStore = getFirestore();
+        fireStore.collection('todoLists').doc(this.props.todoList.id).update({ items: items });
+        this.sortIncreasing = !this.sortIncreasing;
+    }
+
+    sortDueDate = (e) => {
+        console.log("SORT DUE DATE");
+        let items = this.props.todoList.items;
+        items.sort(function(a,b){return a["due_date"] > b["due_date"]});
+        if(!this.sortIncreasing)
+            items.reverse();
+        for(var i = 0; i < items.length; i++)
+            items[i]["key"] = i;
+        const fireStore = getFirestore();
+        fireStore.collection('todoLists').doc(this.props.todoList.id).update({ items: items });
+        this.sortIncreasing = !this.sortIncreasing;
+    }
+
+    sortStatus = (e) => {
+        console.log("SORT STATUS");
+        console.log("SORT DUE DATE");
+        let items = this.props.todoList.items;
+        items.sort(function(a,b){return (a["completed"]? "Completed" : "Pending") > (b["completed"]? "Completed" : "Pending")});
+        if(!this.sortIncreasing)
+            items.reverse();
+        for(var i = 0; i < items.length; i++)
+            items[i]["key"] = i;
+        const fireStore = getFirestore();
+        fireStore.collection('todoLists').doc(this.props.todoList.id).update({ items: items });
+        this.sortIncreasing = !this.sortIncreasing;
     }
 
     makeTableHTML(todoList) {
@@ -66,6 +109,19 @@ class ListScreen extends Component {
                 <div className="input-field">
                     <label className="active" htmlFor="password">Owner</label>
                     <input type="text" name="owner" id="owner" onChange={this.handleChange} defaultValue={todoList.owner} />
+                </div>
+                <div className="header">
+                    <div class="row">
+                        <div class="col s3">
+                            <span className="task" onClick={this.sortTask}><font size="4">TASK</font></span>
+                        </div>
+                        <div class="col s3">
+                            <span className="dueDate" onClick={this.sortDueDate}><font size="4">DUE DATE</font></span>
+                        </div>
+                        <div class="col s3">
+                            <span className="status" onClick={this.sortStatus}><font size="4">STATUS</font></span>
+                        </div>
+                    </div>
                 </div>
 
                 <ItemsList todoList={todoList} />
