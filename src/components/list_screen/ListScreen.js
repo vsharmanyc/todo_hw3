@@ -102,7 +102,7 @@ class ListScreen extends Component {
         console.log("KJFHKJHFKJDHKJFHDKFHDKJFHDKJF");
 
         return (
-            <div className="container white">
+            <div className="container cyan lighten-4">
                  <a class="btn-floating black right"><Modal header="Delete List?" trigger={<i class="material-icons">delete</i>}>
                     <p>
                         Are you sure you want to delete this list?<br></br><br></br>

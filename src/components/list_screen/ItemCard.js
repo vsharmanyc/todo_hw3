@@ -56,19 +56,19 @@ class ItemCard extends React.Component {
         console.log("FDFDFDFDFDFDF");
 
         return (
-            <div className="card z-depth-0 todo-list-link pink-lighten-3">
+            <div className="card z-depth-0 todo-list-link teal accent-4">
                 <div className="card-content grey-text text-darken-3">
                     <div class="row">
-                        <Link to={"/todoList/" + this.props.todoList.id + "/UpdateItem/key=" + item.key}>
+                        <Link to={"/todoList/" + this.props.todoList.id + "/UpdateItem/id=" + item.key}>
                             <div class="col s3">
-                                <span className="card-title"><font size="3">{item.description}</font></span>
-                                <span className="card-title"><font size="3">{"Assigned To: " + item.assigned_to}</font></span>
+                                <span className="card-title"><font color="white" size="3">{item.description}</font></span>
+                                <span className="card-title"><font color="white" size="3">{"Assigned To: " + item.assigned_to}</font></span>
                             </div>
                             <div class="col s2">
-                                <span className="card-title"><font size="3">{item.due_date}</font></span>
+                                <span className="card-title"><font color="white" size="3">{item.due_date}</font></span>
                             </div>
                             <div class="col s5">
-                                <span className="card-title"><font size="3">{item.completed ? "Completed" : "Pending"}</font></span>
+                                <span className="card-title"><font color="white" size="3">{item.completed ? "Completed" : "Pending"}</font></span>
                             </div>
                         </Link>
                         <div class="col">
