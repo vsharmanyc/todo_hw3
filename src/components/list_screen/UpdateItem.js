@@ -117,6 +117,6 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-        { collection: 'todoLists', orderBy: ['time', 'desc'] },
+        { collection: 'todoLists'},
     ]),
 )(UpdateItem);

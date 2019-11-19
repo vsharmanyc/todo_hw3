@@ -26,21 +26,6 @@ class HomeScreen extends Component {
             return <Redirect to="/login" />;
         }
 
-        /*firestoreConnect([
-            { collection: 'todoLists' , orderBy: ['time', 'desc']},
-        ]);*/
-
-        /*const fireStore = getFirestore();
-        fireStore.collection('todoLists').get().then(function(querySnapshot){
-            querySnapshot.forEach(function(doc) {
-                console.log("Adding time stamp");
-                console.log(+ new Date());
-                fireStore.collection('todoLists').doc(doc.id).set({
-                    time: (+ new Date()) + ""
-                }, { merge: true });
-            }.bind(this))
-        }.bind(this));*/
-
         return (
             <div className="dashboard container">
                 <div className="row">
@@ -75,6 +60,6 @@ const mapStateToProps = (state) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-      { collection: 'todoLists' },
+      { collection: 'todoLists',  orderBy: ['time', 'desc'] },
     ]),
 )(HomeScreen);
