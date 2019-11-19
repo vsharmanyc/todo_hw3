@@ -1,7 +1,9 @@
 import React from 'react';
 
 class TodoListCard extends React.Component {
-
+    componentDidMount() {
+        this.setState(this.state);
+    }
     render() {
         const { todoList } = this.props;
         console.log("TodoListCard, todoList.id: " + todoList.id);

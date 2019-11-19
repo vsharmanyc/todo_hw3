@@ -8,7 +8,6 @@ import { getFirestore } from 'redux-firestore';
 
 class HomeScreen extends Component {
 
-    
      async handleNewList(){
         console.log("HANDLE NEW LIST");
         const fireStore = getFirestore();
