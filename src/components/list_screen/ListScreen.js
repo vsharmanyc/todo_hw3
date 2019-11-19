@@ -7,12 +7,24 @@ import { firestoreConnect } from 'react-redux-firebase';
 import { taggedTemplateExpression, tsAnyKeyword } from '@babel/types';
 import { getFirestore } from 'redux-firestore';
 import { Link } from 'react-router-dom';
+import {Modal, Button} from 'react-materialize';
 
 class ListScreen extends Component {
     state = {
         name: '',
         owner: '',
     }
+
+    /*componentDidMount() {
+        const fireStore = getFirestore();
+        fireStore.collection('todoLists').doc(this.props.todoList.id).update({ key: 0 });
+        fireStore.collection('todoLists').get().then(function(querySnapshot){
+            querySnapshot.forEach(function(doc) {
+                let keyVal = doc.data().key;
+                fireStore.collection('todoLists').doc(doc.id).update({key: keyVal + 1});
+            })
+        });
+    }*/
 
     sortIncreasing = true;
 
@@ -40,25 +52,25 @@ class ListScreen extends Component {
 
     sortTask = (e) => {
         console.log("SORT TASK");
-        this.sortItemsBy(function(a,b){return a["description"] > b["description"]});
+        this.sortItemsBy(function (a, b) { return a["description"] > b["description"] });
     }
 
     sortDueDate = (e) => {
         console.log("SORT DUE DATE");
-        this.sortItemsBy(function(a,b){return a["due_date"] > b["due_date"]});
+        this.sortItemsBy(function (a, b) { return a["due_date"] > b["due_date"] });
     }
 
     sortStatus = (e) => {
         console.log("SORT STATUS");
-        this.sortItemsBy(function(a,b){return a["completed"] + "" > b["completed"] + ""});
+        this.sortItemsBy(function (a, b) { return a["completed"] + "" > b["completed"] + "" });
     }
 
     sortItemsBy(sortFunction) {
         let items = this.props.todoList.items;
         items.sort(sortFunction);
-        if(!this.sortIncreasing)
+        if (!this.sortIncreasing)
             items.reverse();
-        for(var i = 0; i < items.length; i++)
+        for (var i = 0; i < items.length; i++)
             items[i]["key"] = i;
         const fireStore = getFirestore();
         fireStore.collection('todoLists').doc(this.props.todoList.id).update({ items: items });
@@ -87,7 +99,7 @@ class ListScreen extends Component {
     render() {
         const auth = this.props.auth;
         const todoList = this.props.todoList;
-        
+
         if (!auth.uid) {
             return <Redirect to="/" />;
         }
@@ -96,7 +108,27 @@ class ListScreen extends Component {
 
         return (
             <div className="container white">
-                <a class="btn-floating btn-small black right"><i class="material-icons" onClick={this.trashClicked} >delete</i></a>
+                <a class="btn-floating black right"><Modal header="Delete List?" trigger={<i class="material-icons">delete</i>}>
+                    <p>
+                        Are you sure you want to delete this list?<br></br><br></br>
+                        <Button
+                            node="a"
+                            waves="light"
+                            small
+                            style={{ marginRight: '5px' }}
+                            onClick={this.trashClicked}
+                        >Yes</Button>
+
+                        <Button
+                            node="a"
+                            waves="light"
+                            small
+                            style={{ marginRight: '5px' }}
+                            modal="close"
+                        >No</Button>
+
+                    </p>
+                </Modal></a>
                 <h5 className="grey-text text-darken-3">Todo List</h5>
                 <div className="input-field">
                     <label className="active" htmlFor="email">Name</label>
@@ -124,7 +156,7 @@ class ListScreen extends Component {
                 {/* this code puts items into a table 
                 <div dangerouslySetInnerHTML={{__html: this.makeTableHTML(todoList)}} />
                 */}
-                <Link to = {"/todoList/" + this.props.todoList.id +"/UpdateItem"}>
+                <Link to={"/todoList/" + this.props.todoList.id + "/UpdateItem"}>
                     <center><a class="btn-floating btn-large black"><i class="material-icons">add_circle</i></a></center>
                 </Link>
                 <br></br>
@@ -149,6 +181,7 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-        { collection: 'todoLists' , orderBy: ['time', 'desc']},
+        { collection: 'todoLists'},
+        //{ collection: 'todoLists', orderBy: ['key', 'desc'] },
     ]),
 )(ListScreen);

@@ -15,8 +15,7 @@ class HomeScreen extends Component {
         var todoListRef =await fireStore.collection('todoLists').add({
             items:[],
             name: "",
-            owner: "",
-            time: + new Date()
+            owner: ""
         });
         console.log(this);
         this.props.history.push("/todoList/" + todoListRef.id);
@@ -26,21 +25,7 @@ class HomeScreen extends Component {
         if (!this.props.auth.uid) {
             return <Redirect to="/login" />;
         }
-
-        /*firestoreConnect([
-            { collection: 'todoLists' , orderBy: ['time', 'desc']},
-        ]);*/
-
-        /*const fireStore = getFirestore();
-        fireStore.collection('todoLists').get().then(function(querySnapshot){
-            querySnapshot.forEach(function(doc) {
-                console.log("Adding time stamp");
-                console.log(+ new Date());
-                fireStore.collection('todoLists').doc(doc.id).set({
-                    time: (+ new Date()) + ""
-                }, { merge: true });
-            }.bind(this))
-        }.bind(this));*/
+        
 
         return (
             <div className="dashboard container">
