@@ -27,7 +27,7 @@ class App extends Component {
             <Navbar />
             <Switch>
               <Route path="/todoList/:id/UpdateItem" component={UpdateItem} />
-              <Route path="/todoList/:id/UpdateItem/:key/id=" component={UpdateItem} />
+              <Route path="/todoList/:id/UpdateItem/:key/key=" component={UpdateItem} />
               <Route exact path="/" component={HomeScreen} />
               <Route path="/databaseTester" component={DatabaseTester} />
               <Route path="/register" component={RegisterScreen} />

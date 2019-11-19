@@ -36,7 +36,7 @@ class UpdateItem extends Component {
     }
 
     submit = (e) => {
-        if (this.props.history["location"]["pathname"].includes("id=")) {
+        if (this.props.history["location"]["pathname"].includes("key=")) {
             let key = parseInt(this.props.history["location"]["pathname"].split("=")[1]);
             this.props.todoList.items[key] = this.itemDict;
         }
@@ -57,7 +57,7 @@ class UpdateItem extends Component {
         const todoList = this.props.todoList;
         let key = "";
 
-        if (this.props.history["location"]["pathname"].includes("id=")) {
+        if (this.props.history["location"]["pathname"].includes("key=")) {
             key = parseInt(this.props.history["location"]["pathname"].split("=")[1]);
             console.log("key = " + key);
             this.itemDict = this.props.todoList.items[key];
@@ -105,8 +105,6 @@ const mapStateToProps = (state, ownProps) => {
     const { id } = ownProps.match.params;
     const { todoLists } = state.firestore.data;
     const todoList = todoLists ? todoLists[id] : null;
-    if(!todoList)
-        return <React.Fragment />
     if (todoList)
         todoList.id = id;
 
@@ -119,6 +117,6 @@ const mapStateToProps = (state, ownProps) => {
 export default compose(
     connect(mapStateToProps),
     firestoreConnect([
-        { collection: 'todoLists'},
+        { collection: 'todoLists', orderBy: ['time', 'desc'] },
     ]),
 )(UpdateItem);
